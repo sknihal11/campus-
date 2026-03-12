@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MVGR Campus Navigator</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Campus Navigation System</h1>
+    <p>MVGR Smart Campus Navigator</p>
+  </header>
+
+  <section class="controls">
+    <div class="searchRow">
+      <div class="searchWrap">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search classroom, lab, department, hostel"
+          oninput="showSuggestions()"
+        >
+        <div id="suggestionsBox"></div>
+      </div>
+
+      <select id="startSelect">
+        <option value="Main Gate">Main Gate</option>
+        <option value="Library">Library</option>
+        <option value="Admin Block">Admin Block</option>
+        <option value="Canteen">Canteen</option>
+        <option value="CSE Department">CSE Department</option>
+      </select>
+
+      <button onclick="searchLocation()">Search</button>
+      <button onclick="openAdmin()">Admin</button>
+    </div>
+
+    <div class="quickButtons">
+      <button onclick="quickSearch('Department')">Departments</button>
+      <button onclick="quickSearch('Lab')">Labs</button>
+      <button onclick="quickSearch('Hostel')">Hostels</button>
+      <button onclick="quickSearch('Parking')">Parking</button>
+      <button onclick="quickSearch('Facility')">Facilities</button>
+      <button onclick="quickSearch('Sports')">Sports</button>
+    </div>
+  </section>
+
+  <section class="info-panels">
+    <div class="panel" id="destinationPanel">
+      <h2>Destination Details</h2>
+      <div id="result">Search for a location or classroom.</div>
+    </div>
+
+    <div class="panel" id="indoorPanel">
+      <h2>Indoor Navigation</h2>
+      <div id="indoorResult">Indoor directions will appear here.</div>
+    </div>
+  </section>
+
+  <div id="map"></div>
+
+  <div id="coordsBox">Click on the map to get exact coordinates</div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
