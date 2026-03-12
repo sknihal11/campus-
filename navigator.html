@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MVGR Campus Navigator</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+</head>
+<body class="pro-ui">
+  <div class="navApp">
+    <div class="topSearchBar">
+      <div class="brandMini">
+        <div class="brandTitle">Campus Navigation System</div>
+        <div class="brandSub">Indoor, outdoor, and location-aware wayfinding</div>
+      </div>
+
+      <div class="searchCluster">
+        <div class="searchWrap mainSearchWrap">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search classroom, lab, department, facility..."
+            oninput="showSuggestions()"
+          >
+          <div id="suggestionsBox"></div>
+        </div>
+
+        <select id="startSelect">
+          <option value="Main Gate">Main Gate</option>
+          <option value="Library">Library</option>
+          <option value="Admin Block">Admin Block</option>
+          <option value="Canteen">Canteen</option>
+          <option value="CSE Department">CSE Department</option>
+        </select>
+
+        <button onclick="searchLocation()">Search</button>
+        <button onclick="openAdvancedDrawer()">More</button>
+      </div>
+    </div>
+
+    <div class="floatingActions">
+      <button onclick="useMyLocation()">Use Approximate Location</button>
+      <button onclick="openJourneyModal()">Start Journey</button>
+      <button onclick="stopJourneyMode()">Stop Journey</button>
+      <button onclick="openAdmin()">Admin</button>
+    </div>
+
+    <div class="quickBar">
+      <button onclick="quickSearch('Department')">Departments</button>
+      <button onclick="quickSearch('Lab')">Labs</button>
+      <button onclick="quickSearch('Hostel')">Hostels</button>
+      <button onclick="quickSearch('Parking')">Parking</button>
+      <button onclick="quickSearch('Facility')">Facilities</button>
+      <button onclick="quickSearch('Sports')">Sports</button>
+    </div>
+
+    <div class="resultCard">
+      <div class="resultHeader">
+        <h2>Route Summary</h2>
+        <span class="resultHint">Primary destination details</span>
+      </div>
+      <div id="result">Search for a location or classroom.</div>
+    </div>
+
+    <div class="mapMeta">
+      <div class="mapBadge">Live Campus Map</div>
+      <div id="coordsBox">Click on the map to get exact coordinates</div>
+    </div>
+
+    <div id="map"></div>
+
+    <button class="drawerToggle" onclick="toggleAdvancedDrawer()">☰</button>
+
+    <aside id="advancedDrawer" class="advancedDrawer">
+      <div class="drawerHeader">
+        <div>
+          <h2>Advanced Tools</h2>
+          <p>Indoor guidance, nearby discovery, and landmark scan</p>
+        </div>
+        <button class="closeDrawerBtn" onclick="closeAdvancedDrawer()">✕</button>
+      </div>
+
+      <div class="drawerSection" id="journeyPanel">
+        <h3>Journey Status</h3>
+        <div id="journeyResult">Journey tracking is not active.</div>
+      </div>
+
+      <div class="drawerSection" id="indoorPanel">
+        <h3>Indoor Navigation</h3>
+        <div id="indoorResult">Indoor directions will appear here.</div>
+      </div>
+
+      <div class="drawerSection" id="nearbyPanel">
+        <h3>Nearby Places</h3>
+        <div class="drawerActions">
+          <button onclick="showNearbyPlaces()">Nearby Places</button>
+        </div>
+        <div id="nearbyResult">Nearby facilities will appear here.</div>
+      </div>
+
+      <div class="drawerSection" id="scanPanel">
+        <h3>Landmark Scan</h3>
+        <select id="landmarkSelect">
+          <option value="">Select scanned landmark</option>
+          <option value="main-gate">Main Gate</option>
+          <option value="library">Library</option>
+          <option value="admin-block">Admin Block</option>
+          <option value="cse-department">CSE Department</option>
+          <option value="it-department">IT Department</option>
+          <option value="ece-department">ECE Department</option>
+          <option value="canteen">Canteen</option>
+          <option value="sports-complex">Sports Complex</option>
+        </select>
+
+        <div class="drawerActions">
+          <button onclick="scanSelectedLandmark()">Scan Landmark</button>
+        </div>
+
+        <div id="scanResult">Scanned landmark result will appear here.</div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+  <script src="script.js"></script>
+  <div id="journeyModal" class="journeyModal">
+    <div class="journeyModalCard">
+      <div class="journeyModalHeader">
+        <h2>Start Journey</h2>
+        <button class="closeDrawerBtn" onclick="closeJourneyModal()">✕</button>
+      </div>
+
+      <div class="journeyFormGroup">
+        <label for="journeyStartSelect">Starting Point</label>
+        <select id="journeyStartSelect">
+         <option value="current">Use Approximate Current Location</option>
+          <option value="Main Gate">Main Gate</option>
+          <option value="Library">Library</option>
+          <option value="Admin Block">Admin Block</option>
+          <option value="Canteen">Canteen</option>
+          <option value="CSE Department">CSE Department</option>
+          <option value="IT Department">IT Department</option>
+          <option value="ECE Department">ECE Department</option>
+        </select>
+      </div>
+
+      <div class="journeyFormGroup">
+        <label for="journeyEndInput">Ending Point</label>
+        <input
+         type="text"
+          id="journeyEndInput"
+          placeholder="Enter classroom, lab, department, or facility"
+        />
+      </div>
+
+      <div class="journeyModalActions">
+        <button onclick="confirmJourneySetup()">Start Journey</button>
+        <button onclick="closeJourneyModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
