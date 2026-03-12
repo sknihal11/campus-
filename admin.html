@@ -144,6 +144,11 @@
         </div>
 
         <div>
+          <label>Department</label>
+          <input type="text" id="department" placeholder="CSE" />
+        </div>
+
+        <div>
           <label>Year</label>
           <select id="year">
             <option value="1st Year">1st Year</option>
@@ -244,7 +249,7 @@
       const tbody = document.getElementById("classroomTableBody");
 
       if (!classrooms.length) {
-        tbody.innerHTML = `<tr><td colspan="7">No classrooms added yet.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9">No classrooms added yet.</td></tr>`;
         return;
       }
 
@@ -291,7 +296,7 @@
       const classrooms = getClassrooms();
 
       const newRoom = {
-        id: roomId || roomNumber.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        id: roomId || (roomNumber.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-" + Date.now()),
         roomNumber,
         roomName,
         department,
