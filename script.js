@@ -509,6 +509,9 @@ const defaultClassrooms = [
 ];
 let selectedMarker = null;
 let routingControl = null;
+let userLocation = null;
+let userLocationMarker = null;
+let userAccuracyCircle = null;
 
 const defaultIcon = L.icon({
   iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
@@ -924,4 +927,220 @@ if (typeof L !== "undefined" && document.getElementById("map")) {
       coordsBox.innerHTML = `Clicked position:<br>lat: ${lat}, lng: ${lng}`;
     }
   });
+}
+function calculateDistance(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) *
+    Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+function useMyLocation() {
+  if (!navigator.geolocation) {
+    alert("Geolocation is not supported in this browser.");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      const accuracy = position.coords.accuracy;
+      if (accuracy > 300) {
+        userLocation = { lat, lng, accuracy };
+
+        const nearbyResult = document.getElementById("nearbyResult");
+        if (nearbyResult) {
+          nearbyResult.innerHTML = `
+            <div class="route-step"><b>Status:</b> GPS location detected, but accuracy is too low for reliable nearby discovery.</div>
+            <div class="route-step"><b>Accuracy:</b> approximately ${Math.round(accuracy)} meters</div>
+            <div class="route-step"><b>Suggestion:</b> Please use the manual start-location dropdown for accurate campus navigation.</div>
+          `;
+        }
+
+        if (map) {
+          if (userLocationMarker) {
+            map.removeLayer(userLocationMarker);
+          }
+
+          if (userAccuracyCircle) {
+            map.removeLayer(userAccuracyCircle);
+          }
+
+          userLocationMarker = L.marker([lat, lng])
+            .addTo(map)
+            .bindPopup(`<b>Approximate Location</b><br>Accuracy: ${Math.round(accuracy)} meters`)
+            .openPopup();
+
+          userAccuracyCircle = L.circle([lat, lng], {
+            radius: accuracy,
+            color: "#2563eb",
+            fillColor: "#60a5fa",
+            fillOpacity: 0.18,
+            weight: 2
+          }).addTo(map);
+
+          map.setView([lat, lng], 16);
+        }
+
+        return;
+      }
+
+      userLocation = { lat, lng, accuracy };
+
+      if (map) {
+        if (userLocationMarker) {
+          map.removeLayer(userLocationMarker);
+        }
+
+        if (userAccuracyCircle) {
+          map.removeLayer(userAccuracyCircle);
+        }
+
+        userLocationMarker = L.marker([lat, lng])
+          .addTo(map)
+          .bindPopup(`<b>Your Current Location</b><br>Accuracy: ${Math.round(accuracy)} meters`)
+          .openPopup();
+
+        userAccuracyCircle = L.circle([lat, lng], {
+          radius: accuracy,
+          color: "#2563eb",
+          fillColor: "#60a5fa",
+          fillOpacity: 0.18,
+          weight: 2
+        }).addTo(map);
+
+        map.setView([lat, lng], 18);
+      }
+
+      const nearbyResult = document.getElementById("nearbyResult");
+      if (nearbyResult) {
+        nearbyResult.innerHTML = `
+          <div class="route-step"><b>Status:</b> Current location captured successfully.</div>
+          <div class="route-step"><b>Latitude:</b> ${lat.toFixed(6)}</div>
+          <div class="route-step"><b>Longitude:</b> ${lng.toFixed(6)}</div>
+          <div class="route-step"><b>Accuracy:</b> approximately ${Math.round(accuracy)} meters</div>
+          <div class="route-step">Click <b>Nearby Places</b> to view the nearest facilities.</div>
+        `;
+      }
+    },
+    function(error) {
+      alert("Unable to get your location. Please allow location access.");
+      console.error(error);
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
+    }
+  );
+}
+
+function showNearbyPlaces() {
+  const nearbyResult = document.getElementById("nearbyResult");
+
+  if (!nearbyResult) return;
+
+  if (!userLocation) {
+    nearbyResult.innerHTML = `
+      <div class="route-step">Current location not captured yet.</div>
+      <div class="route-step">Click <b>Use My Location</b> first.</div>
+    `;
+    return;
+  }
+
+  const rankedPlaces = locations.map(loc => {
+    const distance = calculateDistance(
+      userLocation.lat,
+      userLocation.lng,
+      loc.lat,
+      loc.lng
+    );
+
+    return {
+      ...loc,
+      distance
+    };
+  }).sort((a, b) => a.distance - b.distance);
+
+  const nearest = rankedPlaces.slice(0, 5);
+
+  nearbyResult.innerHTML = nearest.map((place, index) => `
+    <div class="route-step">
+      <b>${index + 1}. ${place.name}</b><br>
+      Category: ${place.category}<br>
+      Building: ${place.building || "N/A"}<br>
+      Landmark: ${place.landmark || "N/A"}<br>
+      Distance: ${(place.distance * 1000).toFixed(0)} meters
+    </div>
+  `).join("");
+}
+function scanSelectedLandmark() {
+  const selectedId = document.getElementById("landmarkSelect").value;
+  const scanResult = document.getElementById("scanResult");
+
+  if (!scanResult) return;
+
+  if (!selectedId) {
+    scanResult.innerHTML = `
+      <div class="route-step">Please select a landmark first.</div>
+    `;
+    return;
+  }
+
+  const detectedLocation = locations.find(loc => loc.id === selectedId);
+
+  if (!detectedLocation) {
+    scanResult.innerHTML = `
+      <div class="route-step">Landmark could not be identified.</div>
+    `;
+    return;
+  }
+
+  const nearest = locations
+    .filter(loc => loc.id !== detectedLocation.id)
+    .map(loc => ({
+      ...loc,
+      distance: calculateDistance(
+        detectedLocation.lat,
+        detectedLocation.lng,
+        loc.lat,
+        loc.lng
+      )
+    }))
+    .sort((a, b) => a.distance - b.distance)
+    .slice(0, 3);
+
+  scanResult.innerHTML = `
+    <div class="route-step"><b>Detected Landmark:</b> ${detectedLocation.name}</div>
+    <div class="route-step"><b>Category:</b> ${detectedLocation.category}</div>
+    <div class="route-step"><b>Building:</b> ${detectedLocation.building || "N/A"}</div>
+    <div class="route-step"><b>Landmark Info:</b> ${detectedLocation.landmark || "N/A"}</div>
+    <div class="route-step"><b>Nearest Facilities:</b><br>
+      ${nearest.map((place, index) => `
+        ${index + 1}. ${place.name} - ${(place.distance * 1000).toFixed(0)} meters
+      `).join("<br>")}
+    </div>
+  `;
+
+  if (map) {
+    map.setView([detectedLocation.lat, detectedLocation.lng], 18);
+
+    if (selectedMarker) {
+      map.removeLayer(selectedMarker);
+    }
+
+    selectedMarker = L.marker([detectedLocation.lat, detectedLocation.lng], { icon: defaultIcon })
+      .addTo(map)
+      .bindPopup(`<b>Detected Landmark:</b><br>${detectedLocation.name}`)
+      .openPopup();
+  }
 }
