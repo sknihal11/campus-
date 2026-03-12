@@ -10,61 +10,98 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 </head>
 <body>
-
-  <header>
-    <h1>Campus Navigation System</h1>
-    <p>MVGR Smart Campus Navigator</p>
-  </header>
-
-  <section class="controls">
-    <div class="searchRow">
-      <div class="searchWrap">
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Search classroom, lab, department, hostel"
-          oninput="showSuggestions()"
-        >
-        <div id="suggestionsBox"></div>
+  <div class="appShell">
+    <aside class="sidebar">
+      <div class="brandBox">
+        <h1>Campus Navigation System</h1>
+        <p>Smart indoor + outdoor navigation</p>
       </div>
 
-      <select id="startSelect">
-        <option value="Main Gate">Main Gate</option>
-        <option value="Library">Library</option>
-        <option value="Admin Block">Admin Block</option>
-        <option value="Canteen">Canteen</option>
-        <option value="CSE Department">CSE Department</option>
-      </select>
+      <div class="searchCard">
+        <div class="searchWrap">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search classroom, lab, department..."
+            oninput="showSuggestions()"
+          >
+          <div id="suggestionsBox"></div>
+        </div>
 
-      <button onclick="searchLocation()">Search</button>
-      <button onclick="openAdmin()">Admin</button>
-    </div>
+        <select id="startSelect">
+          <option value="Main Gate">Main Gate</option>
+          <option value="Library">Library</option>
+          <option value="Admin Block">Admin Block</option>
+          <option value="Canteen">Canteen</option>
+          <option value="CSE Department">CSE Department</option>
+        </select>
 
-    <div class="quickButtons">
-      <button onclick="quickSearch('Department')">Departments</button>
-      <button onclick="quickSearch('Lab')">Labs</button>
-      <button onclick="quickSearch('Hostel')">Hostels</button>
-      <button onclick="quickSearch('Parking')">Parking</button>
-      <button onclick="quickSearch('Facility')">Facilities</button>
-      <button onclick="quickSearch('Sports')">Sports</button>
-    </div>
-  </section>
+        <div class="primaryActions">
+          <button onclick="searchLocation()">Search</button>
+          <button onclick="useMyLocation()">Use My Location</button>
+          <button onclick="showNearbyPlaces()">Nearby Places</button>
+          <button onclick="openAdmin()">Admin</button>
+        </div>
 
-  <section class="info-panels">
-    <div class="panel" id="destinationPanel">
-      <h2>Destination Details</h2>
-      <div id="result">Search for a location or classroom.</div>
-    </div>
+        <div class="quickButtons">
+          <button onclick="quickSearch('Department')">Departments</button>
+          <button onclick="quickSearch('Lab')">Labs</button>
+          <button onclick="quickSearch('Hostel')">Hostels</button>
+          <button onclick="quickSearch('Parking')">Parking</button>
+          <button onclick="quickSearch('Facility')">Facilities</button>
+          <button onclick="quickSearch('Sports')">Sports</button>
+        </div>
+      </div>
 
-    <div class="panel" id="indoorPanel">
-      <h2>Indoor Navigation</h2>
-      <div id="indoorResult">Indoor directions will appear here.</div>
-    </div>
-  </section>
+      <div class="panelStack">
+        <div class="panel" id="destinationPanel">
+          <h2>Destination Details</h2>
+          <div id="result">Search for a location or classroom.</div>
+        </div>
 
-  <div id="map"></div>
+        <div class="panel" id="indoorPanel">
+          <h2>Indoor Navigation</h2>
+          <div id="indoorResult">Indoor directions will appear here.</div>
+        </div>
 
-  <div id="coordsBox">Click on the map to get exact coordinates</div>
+        <div class="panel" id="nearbyPanel">
+          <h2>Nearby Places</h2>
+          <div id="nearbyResult">Nearby facilities will appear here.</div>
+        </div>
+
+        <div class="panel" id="scanPanel">
+          <h2>Landmark Scan</h2>
+
+          <select id="landmarkSelect">
+            <option value="">Select scanned landmark</option>
+            <option value="main-gate">Main Gate</option>
+            <option value="library">Library</option>
+            <option value="admin-block">Admin Block</option>
+            <option value="cse-department">CSE Department</option>
+            <option value="it-department">IT Department</option>
+            <option value="ece-department">ECE Department</option>
+            <option value="canteen">Canteen</option>
+            <option value="sports-complex">Sports Complex</option>
+          </select>
+
+          <div class="scanActions">
+            <button onclick="scanSelectedLandmark()">Scan Landmark</button>
+          </div>
+
+          <div id="scanResult" style="margin-top:12px;">Scanned landmark result will appear here.</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="mapArea">
+      <div class="mapTopBar">
+        <div class="mapBadge">Live Campus Map</div>
+        <div id="coordsBox">Click on the map to get exact coordinates</div>
+      </div>
+
+      <div id="map"></div>
+    </main>
+  </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
