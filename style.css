@@ -176,20 +176,66 @@ button:hover{
   max-width:210px;
 }
 
-.mobileResultCard{
+.routeSheet{
   position:absolute;
   left:12px;
   right:12px;
   bottom:12px;
   z-index:1000;
-  background:rgba(8,18,38,0.72);
+  background:rgba(8,18,38,0.78);
   border:1px solid rgba(255,255,255,0.10);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border-radius:22px;
-  padding:14px;
+  border-radius:24px;
   box-shadow:0 18px 40px rgba(0,0,0,0.22);
-  max-height:150px;
+  overflow:hidden;
+  transition:all 0.28s ease;
+}
+
+.routeSheet.collapsed{
+  height:120px;
+}
+
+.routeSheet.expanded{
+  height:52vh;
+}
+
+.routeSheetHandle{
+  width:52px;
+  height:6px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.28);
+  margin:10px auto 6px;
+}
+
+.routeSheetHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:0 14px 10px;
+  cursor:pointer;
+}
+
+.routeSheetHeader h2{
+  margin:0;
+  font-size:17px;
+  color:#ffffff;
+}
+
+.routeSheetToggleBtn{
+  width:40px;
+  height:40px;
+  padding:0;
+  border-radius:12px;
+  font-size:18px;
+  line-height:1;
+  box-shadow:none;
+}
+
+.routeSheetBody{
+  padding:0 14px 14px;
+  height:calc(100% - 56px);
   overflow:auto;
 }
 
@@ -465,6 +511,20 @@ button:hover{
 }
 
 @media (min-width: 900px){
+  .routeSheet{
+    left:18px;
+    bottom:18px;
+    width:430px;
+    right:auto;
+  }
+
+  .routeSheet.collapsed{
+    height:160px;
+  }
+
+  .routeSheet.expanded{
+    height:42vh;
+  }
   .mobileTopBar{
     top:18px;
     left:18px;

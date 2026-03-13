@@ -52,12 +52,20 @@
 
     <div id="map"></div>
 
-    <div class="mobileResultCard">
-      <div class="resultHeader">
-        <h2>Route Summary</h2>
-        <span class="resultHint">Primary destination details</span>
+    <div id="routeSheet" class="routeSheet collapsed">
+      <div class="routeSheetHandle" onclick="toggleRouteSheet()"></div>
+
+      <div class="routeSheetHeader" onclick="toggleRouteSheet()">
+        <div>
+          <h2>Route Summary</h2>
+          <span class="resultHint">Tap to expand</span>
+        </div>
+        <button class="routeSheetToggleBtn" onclick="toggleRouteSheet(event)">⌃</button>
       </div>
-      <div id="result">Search for a location or classroom.</div>
+
+      <div class="routeSheetBody">
+        <div id="result">Search for a location or classroom.</div>
+      </div>
     </div>
 
     <aside id="advancedDrawer" class="advancedDrawer mobileDrawer">

@@ -642,6 +642,11 @@ function drawRoute(found, startPoint) {
       <div class="route-step"><b>Outdoor Step 2:</b> Follow the highlighted route on the map</div>
       <div class="route-step"><b>Outdoor Step 3:</b> Reach ${found.name}</div>
     `;
+    const sheet = document.getElementById("routeSheet");
+    if (sheet) {
+      sheet.classList.remove("collapsed");
+      sheet.classList.add("expanded");
+    }
 
     document.getElementById("indoorResult").innerHTML =
       "This destination is an outdoor/campus-level location. Indoor directions are only shown for classrooms and labs.";
@@ -695,6 +700,11 @@ function drawRouteFromCoordinates(found, startLat, startLng, startLabel = "Curre
       <div class="route-step"><b>Outdoor Step 2:</b> Follow the highlighted route on the map</div>
       <div class="route-step"><b>Outdoor Step 3:</b> Reach ${found.name}</div>
     `;
+    const sheet = document.getElementById("routeSheet");
+    if (sheet) {
+      sheet.classList.remove("collapsed");
+      sheet.classList.add("expanded");
+    }
 
     document.getElementById("indoorResult").innerHTML =
       "This destination is an outdoor/campus-level location. Indoor directions are only shown for classrooms and labs.";
@@ -760,6 +770,11 @@ function drawRouteToClassroom(classroom, startPoint) {
       <div class="route-step"><b>Outdoor Step 2:</b> Walk towards ${targetLocation.building}</div>
       <div class="route-step"><b>Outdoor Step 3:</b> Enter ${classroom.block}</div>
     `;
+    const sheet = document.getElementById("routeSheet");
+    if (sheet) {
+      sheet.classList.remove("collapsed");
+      sheet.classList.add("expanded");
+    }
 
     renderIndoorDirections(classroom);
   });
@@ -848,6 +863,11 @@ function searchLocation() {
 
   if (!query) {
     document.getElementById("result").innerHTML = "Please enter a location or classroom name.";
+    const sheet = document.getElementById("routeSheet");
+    if (sheet) {
+      sheet.classList.remove("collapsed");
+      sheet.classList.add("expanded");
+    }
     document.getElementById("indoorResult").innerHTML = "Indoor directions will appear here.";
     return;
   }
@@ -1520,3 +1540,23 @@ document.addEventListener("click", function (event) {
     drawer.classList.remove("open");
   }
 });
+
+function toggleRouteSheet(event) {
+  if (event) event.stopPropagation();
+
+  const sheet = document.getElementById("routeSheet");
+  const btn = document.querySelector(".routeSheetToggleBtn");
+  if (!sheet) return;
+
+  const isCollapsed = sheet.classList.contains("collapsed");
+
+  if (isCollapsed) {
+    sheet.classList.remove("collapsed");
+    sheet.classList.add("expanded");
+    if (btn) btn.innerHTML = "⌄";
+  } else {
+    sheet.classList.remove("expanded");
+    sheet.classList.add("collapsed");
+    if (btn) btn.innerHTML = "⌃";
+  }
+}
