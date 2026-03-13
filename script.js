@@ -11,6 +11,7 @@ const locations = [
     info: "MVGR Main Entrance",
     category: "Entrance",
     building: "Entrance Gate",
+    image: "images/main-gate.jpg",
     landmark: "Front side of campus",
     keywords: ["main gate", "entrance", "gate"]
   },
@@ -22,6 +23,7 @@ const locations = [
     lng: 83.406218,
     info: "MVGR Central Library",
     category: "Facility",
+    image: "images/library.jpg",
     building: "Library Block",
     landmark: "Near Sports Complex",
     keywords: ["library", "books", "study", "reading"]
@@ -35,6 +37,7 @@ const locations = [
     info: "Administration Office",
     category: "Admin",
     building: "Admin Block",
+    image: "images/admin-block.jpg",
     landmark: "Near central campus road",
     keywords: ["admin", "administration", "office"]
   },
@@ -46,6 +49,7 @@ const locations = [
     lng: 83.404963,
     info: "Computer Science Department",
     category: "Department",
+    image: "images/cse-department.jpg",
     building: "CSE Block",
     landmark: "Near CSE Park",
     keywords: ["cse", "computer science", "department"]
@@ -569,6 +573,16 @@ function normalizeText(text) {
     .trim();
 }
 
+function buildResultImage(location) {
+  if (!location || !location.image) return "";
+
+  return `
+    <div class="resultImageWrap">
+      <img src="${location.image}" alt="${location.name}" class="resultImage">
+    </div>
+  `;
+}
+
 function getClassrooms() {
   const saved = localStorage.getItem("mvgr_classrooms");
   if (saved) {
@@ -667,6 +681,7 @@ function drawRoute(found, startPoint) {
     const minutes = Math.ceil(time / 60);
 
     document.getElementById("result").innerHTML = `
+      ${buildResultImage(found)}
       <h3>${found.name}</h3>
       <p>${found.info}</p>
       <p><b>Category:</b> ${found.category}</p>
@@ -791,6 +806,7 @@ function drawRouteToClassroom(classroom, startPoint) {
     const minutes = Math.ceil(time / 60);
 
     document.getElementById("result").innerHTML = `
+      ${buildResultImage(targetLocation)}
       <h3>${classroom.roomNumber} - ${classroom.roomName}</h3>
       <p><b>Department:</b> ${classroom.department}</p>
       <p><b>Year:</b> ${classroom.year || "N/A"}</p>
