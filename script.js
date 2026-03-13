@@ -219,6 +219,18 @@ const locations = [
     keywords: ["park", "cse park"]
   },
   {
+    id: "cse-washrooms",
+    name: "CSE Washrooms",
+    aliases: ["toilets", "cse washrooms", "washroom", "restroom"],
+    lat: 18.059479,
+    lng: 83.404711,
+    info: "MVGR CSE Washrooms",
+    category: "Facility",
+    building: "CSE Block",
+    landmark: "Beside CSE Department",
+    keywords: ["cse", "washroom", "facility", "toilet", "restroom"]
+  },
+  {
     id: "chemistry-lab",
     name: "Chemistry Lab",
     aliases: ["chem lab", "laboratory chemistry"],
@@ -303,6 +315,18 @@ const locations = [
     keywords: ["girls hostel", "entrance", "gate"]
   },
   {
+    id: "stationary",
+    name: "MVGR STATIONARY",
+    aliases: ["books", "pens", "stationary", "zerox", "papers", "records", "book"],
+    lat: 18.061588,
+    lng: 83.404456,
+    info: "MVGR STATIONARY",
+    category: "Facility",
+    building: "stationary block",
+    landmark: "Beside Canteen",
+    keywords: ["books", "pens", "stationary", "zerox", "papers", "records", "book"]
+  },
+  {
     id: "boys-hostel-a",
     name: "Boys Hostel-A Block",
     aliases: ["boys hostel a", "boys block a"],
@@ -313,6 +337,18 @@ const locations = [
     building: "Boys Hostel A Block",
     landmark: "Boys hostel area",
     keywords: ["boys hostel", "hostel", "block a"]
+  },
+  {
+    id: "staff-parking",
+    name: "STAFF PARKING",
+    aliases: ["faculty parking", "parking for faculty"],
+    lat: 18.059145,
+    lng: 83.405001,
+    info: "FACULTY PARKING FOR HUMANITIES AND ENGLISH/MATHEMATHICS DEPT",
+    category: "Parking",
+    building: "Parking Zone",
+    landmark: "Backside of Humanities,English and Mathematics Dept",
+    keywords: ["parking", "faculty parking", "private parking"]
   },
   {
     id: "boys-hostel-b",
@@ -712,9 +748,9 @@ function drawRouteFromCoordinates(found, startLat, startLng, startLabel = "Curre
 }
 
 function drawRouteToClassroom(classroom, startPoint) {
-  currentDestination = targetLocation;
   const targetLocation = getLocationById(classroom.outdoorTargetId);
-
+  currentDestination = targetLocation;
+  
   if (!targetLocation) {
     document.getElementById("result").innerHTML = "Outdoor target for this classroom was not found.";
     return;
