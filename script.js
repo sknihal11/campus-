@@ -1,5 +1,6 @@
 let map = null;
-
+let currentRouteInstructions = [];
+let lastSpokenInstruction = "";
 const locations = [
   {
     id: "main-gate",
@@ -623,6 +624,7 @@ function drawRoute(found, startPoint) {
   routingControl.on("routesfound", function (e) {
     animateRouteLine();
     const route = e.routes[0];
+    setRouteInstructions(route);
     const distance = route.summary.totalDistance;
     const time = route.summary.totalTime;
     const km = (distance / 1000).toFixed(2);
@@ -675,6 +677,7 @@ function drawRouteFromCoordinates(found, startLat, startLng, startLabel = "Curre
   routingControl.on("routesfound", function (e) {
     animateRouteLine();
     const route = e.routes[0];
+    setRouteInstructions(route);
     const distance = route.summary.totalDistance;
     const time = route.summary.totalTime;
     const km = (distance / 1000).toFixed(2);
@@ -735,6 +738,7 @@ function drawRouteToClassroom(classroom, startPoint) {
   routingControl.on("routesfound", function (e) {
     animateRouteLine();
     const route = e.routes[0];
+    setRouteInstructions(route);
     const distance = route.summary.totalDistance;
     const time = route.summary.totalTime;
     const km = (distance / 1000).toFixed(2);
@@ -1347,9 +1351,22 @@ function startJourneyMode() {
         currentDestination.lat,
         currentDestination.lng
       );
+      
+      let guidanceText = "Continue towards your destination.";
+
+      if (distToDestination * 1000 <= 25) {
+        guidanceText = "You have arrived at your destination.";
+      } else if (distToDestination * 1000 <= 60) {
+        guidanceText = "You are very close. Keep going straight.";
+      } else if (currentRouteInstructions.length > 0) {
+        guidanceText = getFriendlyInstructionText(currentRouteInstructions[0].text);
+      }
+
+      speakText(guidanceText);
 
       if (journeyResult) {
         journeyResult.innerHTML = `
+          <div class="route-step"><b>Guidance:</b> ${guidanceText}</div>
           <div class="route-step"><b>Status:</b> Journey in progress</div>
           <div class="route-step"><b>Destination:</b> ${currentDestination.name}</div>
           <div class="route-step"><b>Current Accuracy:</b> ${Math.round(accuracy)} meters</div>
@@ -1453,4 +1470,41 @@ function confirmJourneySetup() {
   setTimeout(() => {
     startJourneyMode();
   }, 500);
+}
+function setRouteInstructions(route) {
+  currentRouteInstructions = [];
+
+  if (!route || !route.instructions) return;
+
+  currentRouteInstructions = route.instructions.map(step => {
+    return {
+      text: step.text || "Continue",
+      distance: step.distance || 0
+    };
+  });
+}
+
+function speakText(text) {
+  if (!("speechSynthesis" in window)) return;
+  if (!text || text === lastSpokenInstruction) return;
+
+  lastSpokenInstruction = text;
+
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = 1;
+  utterance.pitch = 1;
+  utterance.volume = 1;
+  window.speechSynthesis.speak(utterance);
+}
+
+function getFriendlyInstructionText(text) {
+  const t = (text || "").toLowerCase();
+
+  if (t.includes("left")) return "Turn left.";
+  if (t.includes("right")) return "Turn right.";
+  if (t.includes("straight")) return "Go straight.";
+  if (t.includes("continue")) return "Continue straight.";
+  if (t.includes("arrive")) return "You are approaching your destination.";
+  return text || "Continue towards your destination.";
 }

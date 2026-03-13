@@ -448,44 +448,99 @@ button:hover{
   }
 
   .topSearchBar{
-    right:78px;
+    left:12px;
+    right:72px;
+    top:12px;
+    padding:14px;
+    flex-direction:column;
+    align-items:stretch;
+    gap:12px;
+  }
+
+  .brandTitle{
+    font-size:20px;
+  }
+
+  .brandSub{
+    font-size:12px;
+  }
+
+  .searchCluster{
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
   }
 
   .mainSearchWrap{
     width:100%;
   }
 
-  .searchCluster{
-    flex-direction:column;
-    align-items:stretch;
+  .searchCluster select,
+  .searchCluster button,
+  .searchCluster input{
+    width:100%;
   }
 
   .floatingActions{
-    top:132px;
-    left:18px;
+    position:absolute;
+    left:12px;
+    right:12px;
+    top:auto;
+    bottom:210px;
+    max-width:none;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
   }
 
   .quickBar{
     position:absolute;
-    top:unset;
-    bottom:180px;
-    left:18px;
-    right:18px;
+    left:12px;
+    right:12px;
+    top:auto;
+    bottom:150px;
+    display:flex;
+    overflow-x:auto;
+    flex-wrap:nowrap;
+    padding-bottom:4px;
+    gap:8px;
+  }
+
+  .quickBar button{
+    white-space:nowrap;
+    flex:0 0 auto;
   }
 
   .resultCard{
+    left:12px;
+    right:12px;
+    bottom:12px;
     width:auto;
-    right:18px;
-    bottom:18px;
-    max-height:28vh;
+    max-width:none;
+    max-height:26vh;
+    padding:14px;
   }
 
   .mapMeta{
-    right:78px;
-    top:unset;
-    bottom:360px;
+    right:72px;
+    top:auto;
+    bottom:320px;
+    align-items:flex-end;
+  }
+
+  .drawerToggle{
+    top:12px;
+    right:12px;
+    width:52px;
+    height:52px;
+  }
+
+  .advancedDrawer{
+    width:100%;
+    max-width:100%;
   }
 }
+
 .journeyModal{
   position:fixed;
   inset:0;
