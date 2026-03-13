@@ -19,7 +19,7 @@ body.pro-ui{
   overflow:hidden;
 }
 
-.navApp{
+.mobileAppShell{
   position:relative;
   width:100%;
   height:100vh;
@@ -31,61 +31,68 @@ body.pro-ui{
   z-index:1;
 }
 
-.topSearchBar{
+.mobileTopBar{
   position:absolute;
-  top:18px;
-  left:18px;
-  right:92px;
+  top:12px;
+  left:12px;
+  right:12px;
   z-index:1000;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:16px;
-  background:rgba(8,18,38,0.64);
+  gap:10px;
+}
+
+.mobileBrand{
+  flex:1;
+  background:rgba(8,18,38,0.68);
   border:1px solid rgba(255,255,255,0.10);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border-radius:22px;
-  padding:16px 18px;
-  box-shadow:0 18px 40px rgba(0,0,0,0.20);
+  border-radius:20px;
+  padding:14px 16px;
+  box-shadow:0 14px 30px rgba(0,0,0,0.16);
 }
 
-.brandMini{
-  min-width:260px;
-}
-
-.brandTitle{
-  font-size:22px;
+.mobileBrandTitle{
+  font-size:18px;
   font-weight:800;
   color:#ffffff;
 }
 
-.brandSub{
+.mobileBrandSub{
   margin-top:4px;
-  font-size:13px;
+  font-size:12px;
   color:#c6d9f7;
 }
 
-.searchCluster{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex:1;
-  justify-content:flex-end;
-  flex-wrap:wrap;
+.mobileSearchCard{
+  position:absolute;
+  top:92px;
+  left:12px;
+  right:12px;
+  z-index:1000;
+  background:rgba(8,18,38,0.68);
+  border:1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius:20px;
+  padding:14px;
+  box-shadow:0 14px 30px rgba(0,0,0,0.16);
+}
+
+.searchWrap{
+  position:relative;
+  width:100%;
+  margin-bottom:10px;
 }
 
 .mainSearchWrap{
-  position:relative;
-  width:360px;
-  max-width:100%;
-}
-
-.searchWrap input{
   width:100%;
 }
 
 input, select{
+  width:100%;
   padding:13px 14px;
   border:1px solid rgba(255,255,255,0.14);
   border-radius:16px;
@@ -128,53 +135,61 @@ button:hover{
   filter:brightness(1.04);
 }
 
-.floatingActions{
-  position:absolute;
-  top:108px;
-  left:18px;
-  z-index:1000;
-  display:flex;
+.mobilePrimaryActions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
   gap:10px;
-  flex-wrap:wrap;
-  max-width:300px;
+  margin-top:10px;
 }
 
-.quickBar{
+.drawerToggle{
+  width:52px;
+  height:52px;
+  border-radius:18px;
+  padding:0;
+  font-size:20px;
+  flex:0 0 52px;
+}
+
+.mobileMapMeta{
   position:absolute;
-  top:108px;
-  left:340px;
-  right:92px;
-  z-index:1000;
+  right:12px;
+  top:290px;
+  z-index:950;
   display:flex;
+  flex-direction:column;
   gap:8px;
-  flex-wrap:wrap;
-  align-items:center;
+  align-items:flex-end;
 }
 
-.quickBar button{
-  background:rgba(10,22,48,0.64);
-  border:1px solid rgba(255,255,255,0.12);
-  color:#e5f1ff;
-  box-shadow:none;
+.mapBadge,
+#coordsBox{
+  background:rgba(8,18,38,0.68);
+  color:#eef6ff;
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius:16px;
+  padding:9px 12px;
+  box-shadow:0 10px 24px rgba(0,0,0,0.14);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  font-size:12px;
+  max-width:210px;
 }
 
-.resultCard{
+.mobileResultCard{
   position:absolute;
-  left:18px;
-  bottom:18px;
-  width:430px;
-  max-width:calc(100vw - 36px);
+  left:12px;
+  right:12px;
+  bottom:12px;
   z-index:1000;
-  background:rgba(8,18,38,0.70);
+  background:rgba(8,18,38,0.72);
   border:1px solid rgba(255,255,255,0.10);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border-radius:24px;
-  padding:18px;
+  border-radius:22px;
+  padding:14px;
   box-shadow:0 18px 40px rgba(0,0,0,0.22);
-  max-height:38vh;
+  max-height:150px;
   overflow:auto;
 }
 
@@ -183,90 +198,55 @@ button:hover{
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  margin-bottom:10px;
+  margin-bottom:8px;
 }
 
 .resultHeader h2{
   margin:0;
-  font-size:20px;
+  font-size:17px;
   color:#ffffff;
 }
 
 .resultHint{
-  font-size:12px;
+  font-size:11px;
   color:#bfd4f5;
 }
 
 #result,
 #indoorResult,
 #nearbyResult,
-#scanResult{
-  font-size:14px;
-  line-height:1.65;
+#scanResult,
+#journeyResult{
+  font-size:13px;
+  line-height:1.55;
   color:#e6f0ff;
 }
 
 .route-step{
   background:rgba(255,255,255,0.08);
   border:1px solid rgba(255,255,255,0.10);
-  padding:10px 12px;
+  padding:9px 10px;
   border-radius:14px;
-  margin:8px 0;
-}
-
-.mapMeta{
-  position:absolute;
-  top:170px;
-  right:18px;
-  z-index:950;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  align-items:flex-end;
-}
-
-.mapBadge,
-#coordsBox{
-  background:rgba(8,18,38,0.66);
-  color:#eef6ff;
-  border:1px solid rgba(255,255,255,0.10);
-  border-radius:16px;
-  padding:10px 14px;
-  box-shadow:0 10px 24px rgba(0,0,0,0.14);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  font-size:13px;
-}
-
-.drawerToggle{
-  position:absolute;
-  top:18px;
-  right:18px;
-  z-index:1200;
-  width:56px;
-  height:56px;
-  border-radius:18px;
-  padding:0;
-  font-size:20px;
+  margin:7px 0;
 }
 
 .advancedDrawer{
-  position:absolute;
+  position:fixed;
   top:0;
   right:0;
-  width:380px;
-  max-width:92vw;
+  width:100%;
+  max-width:100%;
   height:100vh;
   z-index:1300;
   transform:translateX(100%);
   transition:transform 0.28s ease;
-  background:rgba(8,18,38,0.78);
+  background:rgba(8,18,38,0.92);
   border-left:1px solid rgba(255,255,255,0.10);
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
   box-shadow:-16px 0 36px rgba(0,0,0,0.20);
   overflow-y:auto;
-  padding:18px;
+  padding:16px;
 }
 
 .advancedDrawer.open{
@@ -283,7 +263,7 @@ button:hover{
 
 .drawerHeader h2{
   margin:0;
-  font-size:24px;
+  font-size:22px;
   color:#ffffff;
 }
 
@@ -304,14 +284,14 @@ button:hover{
   background:rgba(255,255,255,0.08);
   border:1px solid rgba(255,255,255,0.10);
   border-radius:20px;
-  padding:16px;
+  padding:14px;
   margin-bottom:14px;
   box-shadow:0 10px 24px rgba(0,0,0,0.10);
 }
 
 .drawerSection h3{
   margin:0 0 10px;
-  font-size:18px;
+  font-size:17px;
   color:#ffffff;
 }
 
@@ -320,6 +300,17 @@ button:hover{
   gap:10px;
   flex-wrap:wrap;
   margin:10px 0 12px;
+}
+
+.drawerActionGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  width:100%;
+  gap:10px;
+}
+
+.drawerActionGrid button{
+  width:100%;
 }
 
 #suggestionsBox{
@@ -371,6 +362,67 @@ button:hover{
   opacity:0.85;
 }
 
+.journeyModal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:2000;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.journeyModal.open{
+  display:flex;
+}
+
+.journeyModalCard{
+  width:94vw;
+  max-width:94vw;
+  background:rgba(8,18,38,0.88);
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius:24px;
+  padding:18px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.30);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.journeyModalHeader{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:18px;
+}
+
+.journeyModalHeader h2{
+  margin:0;
+  font-size:22px;
+  color:#ffffff;
+}
+
+.journeyFormGroup{
+  margin-bottom:14px;
+}
+
+.journeyFormGroup label{
+  display:block;
+  margin-bottom:8px;
+  font-size:14px;
+  font-weight:700;
+  color:#d8e8ff;
+}
+
+.journeyModalActions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip{
   background:#ffffff !important;
@@ -412,257 +464,61 @@ button:hover{
   color:#eef6ff !important;
 }
 
-@media (max-width: 1100px){
-  .topSearchBar{
-    flex-direction:column;
-    align-items:stretch;
-    right:78px;
-  }
-
-  .searchCluster{
-    justify-content:flex-start;
-  }
-
-  .brandMini{
-    min-width:auto;
-  }
-
-  .quickBar{
+@media (min-width: 900px){
+  .mobileTopBar{
+    top:18px;
     left:18px;
-    right:78px;
-    top:180px;
+    right:18px;
   }
 
-  .floatingActions{
-    top:132px;
+  .mobileBrandTitle{
+    font-size:22px;
   }
 
-  .mapMeta{
-    top:240px;
-  }
-}
-
-@media (max-width: 768px){
-  body.pro-ui{
-    overflow:auto;
+  .mobileBrandSub{
+    font-size:13px;
   }
 
-  .topSearchBar{
-    left:10px;
-    right:70px;
-    top:10px;
-    padding:12px;
-    border-radius:20px;
-    flex-direction:column;
-    align-items:stretch;
-    gap:10px;
-  }
-
-  .brandMini{
-    min-width:auto;
-  }
-
-  .brandTitle{
-    font-size:18px;
-    line-height:1.2;
-  }
-
-  .brandSub{
-    font-size:12px;
-    line-height:1.4;
-  }
-
-  .searchCluster{
-    flex-direction:column;
-    align-items:stretch;
-    gap:8px;
-  }
-
-  .mainSearchWrap{
-    width:100%;
-  }
-
-  .searchCluster input,
-  .searchCluster select,
-  .searchCluster button{
-    width:100%;
-  }
-
-  .drawerToggle{
-    top:10px;
-    right:10px;
-    width:50px;
-    height:50px;
-    border-radius:16px;
-  }
-
-  .quickBar{
-    display:none;
-  }
-
-  .floatingActions{
-    position:absolute;
-    left:10px;
-    right:10px;
-    bottom:140px;
-    top:auto;
-    max-width:none;
+  .mobileSearchCard{
+    top:90px;
+    left:18px;
+    right:18px;
     display:grid;
+    grid-template-columns:1.8fr 1fr auto;
+    gap:10px;
+    align-items:center;
+  }
+
+  .searchWrap{
+    margin-bottom:0;
+  }
+
+  .mobilePrimaryActions{
     grid-template-columns:1fr 1fr;
-    gap:8px;
-    z-index:1000;
+    margin-top:0;
   }
 
-  .floatingActions button{
-    width:100%;
-    min-height:52px;
-    font-size:13px;
-    padding:10px 12px;
-    border-radius:14px;
+  .mobileMapMeta{
+    top:160px;
+    right:18px;
+    bottom:auto;
   }
 
-  .mapMeta{
-    position:absolute;
-    right:10px;
-    bottom:330px;
-    top:auto;
-    gap:8px;
-    align-items:flex-end;
-    z-index:950;
-  }
-
-  .mapBadge,
-  #coordsBox{
-    font-size:12px;
-    padding:8px 12px;
-    border-radius:14px;
-    max-width:220px;
-  }
-
-  .resultCard{
-    left:10px;
-    right:10px;
-    bottom:10px;
-    width:auto;
-    max-width:none;
-    max-height:120px;
-    min-height:unset;
-    padding:14px;
-    border-radius:20px;
-    overflow:auto;
-    z-index:1000;
-  }
-
-  .resultHeader{
-    margin-bottom:8px;
-  }
-
-  .resultHeader h2{
-    font-size:16px;
-  }
-
-  .resultHint{
-    font-size:11px;
-  }
-
-  #result{
-    font-size:13px;
-    line-height:1.5;
-  }
-
-  .route-step{
-    padding:8px 10px;
-    margin:6px 0;
-    font-size:12px;
+  .mobileResultCard{
+    left:18px;
+    bottom:18px;
+    width:430px;
+    max-width:calc(100vw - 36px);
+    max-height:38vh;
   }
 
   .advancedDrawer{
-    width:100%;
-    max-width:100%;
-    padding:14px;
-  }
-
-  .drawerHeader h2{
-    font-size:20px;
-  }
-
-  .drawerSection{
-    padding:14px;
-    border-radius:18px;
-  }
-
-  .drawerSection h3{
-    font-size:16px;
+    width:380px;
+    max-width:92vw;
   }
 
   .journeyModalCard{
-    width:94vw;
-    padding:16px;
-    border-radius:20px;
+    width:460px;
+    max-width:92vw;
   }
-
-  #map{
-    height:100vh;
-  }
-}
-
-.journeyModal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.45);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:2000;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-.journeyModal.open{
-  display:flex;
-}
-
-.journeyModalCard{
-  width:460px;
-  max-width:92vw;
-  background:rgba(8,18,38,0.88);
-  border:1px solid rgba(255,255,255,0.10);
-  border-radius:24px;
-  padding:20px;
-  box-shadow:0 20px 50px rgba(0,0,0,0.30);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-}
-
-.journeyModalHeader{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:14px;
-  margin-bottom:18px;
-}
-
-.journeyModalHeader h2{
-  margin:0;
-  font-size:24px;
-  color:#ffffff;
-}
-
-.journeyFormGroup{
-  margin-bottom:14px;
-}
-
-.journeyFormGroup label{
-  display:block;
-  margin-bottom:8px;
-  font-size:14px;
-  font-weight:700;
-  color:#d8e8ff;
-}
-
-.journeyModalActions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:10px;
 }

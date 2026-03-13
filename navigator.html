@@ -9,55 +9,50 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 </head>
+
 <body class="pro-ui">
-  <div class="navApp">
-    <div class="topSearchBar">
-      <div class="brandMini">
-        <div class="brandTitle">Campus Navigation System</div>
-        <div class="brandSub">Indoor, outdoor, and location-aware wayfinding</div>
+  <div class="mobileAppShell">
+    <div class="mobileTopBar">
+      <div class="mobileBrand">
+        <div class="mobileBrandTitle">Campus Navigation System</div>
+        <div class="mobileBrandSub">Smart campus wayfinding</div>
+      </div>
+      <button class="drawerToggle" onclick="toggleAdvancedDrawer()">☰</button>
+    </div>
+
+    <div class="mobileSearchCard">
+      <div class="searchWrap mainSearchWrap">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search classroom, lab, department, facility..."
+          oninput="showSuggestions()"
+        >
+        <div id="suggestionsBox"></div>
       </div>
 
-      <div class="searchCluster">
-        <div class="searchWrap mainSearchWrap">
-          <input
-            type="text"
-            id="searchInput"
-            placeholder="Search classroom, lab, department, facility..."
-            oninput="showSuggestions()"
-          >
-          <div id="suggestionsBox"></div>
-        </div>
+      <select id="startSelect">
+        <option value="Main Gate">Main Gate</option>
+        <option value="Library">Library</option>
+        <option value="Admin Block">Admin Block</option>
+        <option value="Canteen">Canteen</option>
+        <option value="CSE Department">CSE Department</option>
+      </select>
 
-        <select id="startSelect">
-          <option value="Main Gate">Main Gate</option>
-          <option value="Library">Library</option>
-          <option value="Admin Block">Admin Block</option>
-          <option value="Canteen">Canteen</option>
-          <option value="CSE Department">CSE Department</option>
-        </select>
-
+      <div class="mobilePrimaryActions">
         <button onclick="searchLocation()">Search</button>
-        <button onclick="openAdvancedDrawer()">More</button>
+        <button onclick="openAdvancedDrawer()">Menu</button>
       </div>
     </div>
 
-    <div class="floatingActions">
-      <button onclick="useMyLocation()">Use Approximate Location</button>
-      <button onclick="openJourneyModal()">Start Journey</button>
-      <button onclick="stopJourneyMode()">Stop Journey</button>
-      <button onclick="openAdmin()">Admin</button>
+    <div class="mobileMapMeta">
+      <div class="mapBadge">Live Campus Map</div>
+      <div id="coordsBox">Tap map for coordinates</div>
     </div>
 
-    <div class="quickBar">
-      <button onclick="quickSearch('Department')">Departments</button>
-      <button onclick="quickSearch('Lab')">Labs</button>
-      <button onclick="quickSearch('Hostel')">Hostels</button>
-      <button onclick="quickSearch('Parking')">Parking</button>
-      <button onclick="quickSearch('Facility')">Facilities</button>
-      <button onclick="quickSearch('Sports')">Sports</button>
-    </div>
+    <div id="map"></div>
 
-    <div class="resultCard">
+    <div class="mobileResultCard">
       <div class="resultHeader">
         <h2>Route Summary</h2>
         <span class="resultHint">Primary destination details</span>
@@ -65,22 +60,35 @@
       <div id="result">Search for a location or classroom.</div>
     </div>
 
-    <div class="mapMeta">
-      <div class="mapBadge">Live Campus Map</div>
-      <div id="coordsBox">Click on the map to get exact coordinates</div>
-    </div>
-
-    <div id="map"></div>
-
-    <button class="drawerToggle" onclick="toggleAdvancedDrawer()">☰</button>
-
-    <aside id="advancedDrawer" class="advancedDrawer">
+    <aside id="advancedDrawer" class="advancedDrawer mobileDrawer">
       <div class="drawerHeader">
         <div>
           <h2>Advanced Tools</h2>
-          <p>Indoor guidance, nearby discovery, and landmark scan</p>
+          <p>Navigation, journey, discovery, and controls</p>
         </div>
         <button class="closeDrawerBtn" onclick="closeAdvancedDrawer()">✕</button>
+      </div>
+
+      <div class="drawerSection">
+        <h3>Quick Actions</h3>
+        <div class="drawerActions drawerActionGrid">
+          <button onclick="useMyLocation()">Use Approximate Location</button>
+          <button onclick="openJourneyModal()">Start Journey</button>
+          <button onclick="stopJourneyMode()">Stop Journey</button>
+          <button onclick="openAdmin()">Admin</button>
+        </div>
+      </div>
+
+      <div class="drawerSection">
+        <h3>Quick Categories</h3>
+        <div class="drawerActions drawerActionGrid">
+          <button onclick="quickSearch('Department')">Departments</button>
+          <button onclick="quickSearch('Lab')">Labs</button>
+          <button onclick="quickSearch('Hostel')">Hostels</button>
+          <button onclick="quickSearch('Parking')">Parking</button>
+          <button onclick="quickSearch('Facility')">Facilities</button>
+          <button onclick="quickSearch('Sports')">Sports</button>
+        </div>
       </div>
 
       <div class="drawerSection" id="journeyPanel">
@@ -124,9 +132,6 @@
     </aside>
   </div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
-  <script src="script.js"></script>
   <div id="journeyModal" class="journeyModal">
     <div class="journeyModalCard">
       <div class="journeyModalHeader">
@@ -137,7 +142,7 @@
       <div class="journeyFormGroup">
         <label for="journeyStartSelect">Starting Point</label>
         <select id="journeyStartSelect">
-         <option value="current">Use Approximate Current Location</option>
+          <option value="current">Use Approximate Current Location</option>
           <option value="Main Gate">Main Gate</option>
           <option value="Library">Library</option>
           <option value="Admin Block">Admin Block</option>
@@ -151,7 +156,7 @@
       <div class="journeyFormGroup">
         <label for="journeyEndInput">Ending Point</label>
         <input
-         type="text"
+          type="text"
           id="journeyEndInput"
           placeholder="Enter classroom, lab, department, or facility"
         />
@@ -163,5 +168,9 @@
       </div>
     </div>
   </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

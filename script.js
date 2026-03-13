@@ -1508,3 +1508,15 @@ function getFriendlyInstructionText(text) {
   if (t.includes("arrive")) return "You are approaching your destination.";
   return text || "Continue towards your destination.";
 }
+document.addEventListener("click", function (event) {
+  const drawer = document.getElementById("advancedDrawer");
+  const toggleBtn = document.querySelector(".drawerToggle");
+
+  if (!drawer || !drawer.classList.contains("open")) return;
+  if (drawer.contains(event.target)) return;
+  if (toggleBtn && toggleBtn.contains(event.target)) return;
+
+  if (window.innerWidth < 900) {
+    drawer.classList.remove("open");
+  }
+});
