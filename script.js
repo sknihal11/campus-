@@ -1223,6 +1223,7 @@ function showNearbyPlaces() {
 
 function scanSelectedLandmark() {
   openAdvancedDrawer();
+
   const selectedId = document.getElementById("landmarkSelect").value;
   const scanResult = document.getElementById("scanResult");
 
@@ -1232,6 +1233,59 @@ function scanSelectedLandmark() {
     scanResult.innerHTML = `
       <div class="route-step">Please select a landmark first.</div>
     `;
+    return;
+  }
+
+  if (selectedId === "current-location") {
+    if (!userLocation || !userLocation.snappedLocation) {
+      scanResult.innerHTML = `
+        <div class="route-step"><b>Current Location:</b> Not available yet.</div>
+        <div class="route-step">Please click <b>Use Approximate Location</b> first.</div>
+      `;
+      return;
+    }
+
+    const detectedLocation = userLocation.snappedLocation;
+
+    const nearest = locations
+      .filter(loc => loc.id !== detectedLocation.id)
+      .map(loc => ({
+        ...loc,
+        distance: calculateDistance(
+          detectedLocation.lat,
+          detectedLocation.lng,
+          loc.lat,
+          loc.lng
+        )
+      }))
+      .sort((a, b) => a.distance - b.distance)
+      .slice(0, 3);
+
+    scanResult.innerHTML = `
+      <div class="route-step"><b>Detected Landmark:</b> Current Location</div>
+      <div class="route-step"><b>Nearest Campus Point:</b> ${detectedLocation.name}</div>
+      <div class="route-step"><b>Category:</b> ${detectedLocation.category}</div>
+      <div class="route-step"><b>Building:</b> ${detectedLocation.building || "N/A"}</div>
+      <div class="route-step"><b>Nearest Facilities:</b><br>
+        ${nearest.map((place, index) => `
+          ${index + 1}. ${place.name} - ${(place.distance * 1000).toFixed(0)} meters
+        `).join("<br>")}
+      </div>
+    `;
+
+    if (map) {
+      map.setView([detectedLocation.lat, detectedLocation.lng], 18);
+
+      if (selectedMarker) {
+        map.removeLayer(selectedMarker);
+      }
+
+      selectedMarker = L.marker([detectedLocation.lat, detectedLocation.lng], { icon: defaultIcon })
+        .addTo(map)
+        .bindPopup(`<b>Current Location Mapped To:</b><br>${detectedLocation.name}`)
+        .openPopup();
+    }
+
     return;
   }
 
