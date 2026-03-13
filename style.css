@@ -151,6 +151,93 @@ button:hover{
   flex:0 0 52px;
 }
 
+.indoorLayoutCard{
+  margin-top:14px;
+  padding:14px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.10);
+}
+
+.indoorLayoutCard h4{
+  margin:0 0 12px;
+  font-size:15px;
+  color:#ffffff;
+}
+
+#indoorLayout{
+  color:#e6f0ff;
+}
+
+.floorBadge{
+  display:inline-block;
+  margin-bottom:10px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(59,130,246,0.18);
+  border:1px solid rgba(96,165,250,0.20);
+  color:#dbeafe;
+  font-size:12px;
+  font-weight:700;
+}
+
+.layoutLegend{
+  font-size:12px;
+  color:#cbd5e1;
+  margin-bottom:10px;
+}
+
+.floorPlan{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.floorRow{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.floorBox{
+  min-width:72px;
+  padding:12px 10px;
+  border-radius:14px;
+  text-align:center;
+  font-size:12px;
+  font-weight:700;
+  border:1px solid rgba(255,255,255,0.10);
+  background:rgba(255,255,255,0.06);
+  color:#eaf3ff;
+}
+
+.floorBox.stairs{
+  background:rgba(245,158,11,0.18);
+  border-color:rgba(245,158,11,0.30);
+  color:#fde68a;
+}
+
+.floorBox.corridor{
+  flex:1;
+  min-width:100px;
+  background:rgba(255,255,255,0.04);
+  color:#cbd5e1;
+}
+
+.floorBox.room-active{
+  background:linear-gradient(135deg, #3b82f6, #22d3ee);
+  color:#ffffff;
+  border-color:transparent;
+  box-shadow:0 8px 18px rgba(37,99,235,0.24);
+}
+
+.layoutNote{
+  margin-top:10px;
+  font-size:12px;
+  color:#cbd5e1;
+  line-height:1.5;
+}
+
 .mobileMapMeta{
   position:absolute;
   right:12px;

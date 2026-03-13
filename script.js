@@ -573,6 +573,37 @@ function normalizeText(text) {
     .trim();
 }
 
+function buildIndoorLayout(classroom) {
+  if (!classroom) return `<div class="layoutNote">No indoor layout available.</div>`;
+
+  const roomLabel = classroom.roomNumber || classroom.roomName || "Target Room";
+  const floorLabel = classroom.floor || "Unknown Floor";
+
+  return `
+    <div class="floorBadge">Floor: ${floorLabel}</div>
+    <div class="layoutLegend">Simplified indoor navigation view</div>
+
+    <div class="floorPlan">
+      <div class="floorRow">
+        <div class="floorBox stairs">STAIRS</div>
+        <div class="floorBox corridor">CORRIDOR</div>
+        <div class="floorBox">${classroom.department || "BLOCK"}</div>
+      </div>
+
+      <div class="floorRow">
+        <div class="floorBox">Room 1</div>
+        <div class="floorBox">Room 2</div>
+        <div class="floorBox room-active">${roomLabel}</div>
+        <div class="floorBox">Room 4</div>
+      </div>
+    </div>
+
+    <div class="layoutNote">
+      Highlighted room is the target destination. Follow the staircase and corridor guidance shown above.
+    </div>
+  `;
+}
+
 function buildResultImage(location) {
   if (!location || !location.image) return "";
 
@@ -619,14 +650,22 @@ function clearOldRoute() {
 
 function renderIndoorDirections(classroom) {
   openAdvancedDrawer();
-  const indoorPanel = document.getElementById("indoorResult");
 
-  indoorPanel.innerHTML = `
-    <div class="route-step"><b>Destination Block:</b> ${classroom.block}</div>
-    <div class="route-step"><b>Floor:</b> ${classroom.floor}</div>
-    <div class="route-step"><b>Landmark:</b> ${classroom.landmark}</div>
-    <div class="route-step"><b>Indoor Route:</b> ${classroom.indoorNotes}</div>
-  `;
+  const indoorPanel = document.getElementById("indoorResult");
+  const indoorLayout = document.getElementById("indoorLayout");
+
+  if (indoorPanel) {
+    indoorPanel.innerHTML = `
+      <div class="route-step"><b>Destination Block:</b> ${classroom.block}</div>
+      <div class="route-step"><b>Floor:</b> ${classroom.floor}</div>
+      <div class="route-step"><b>Landmark:</b> ${classroom.landmark}</div>
+      <div class="route-step"><b>Indoor Route:</b> ${classroom.indoorNotes}</div>
+    `;
+  }
+
+  if (indoorLayout) {
+    indoorLayout.innerHTML = buildIndoorLayout(classroom);
+  }
 }
 
 function renderOutdoorText(startPoint, destination) {
@@ -1525,10 +1564,36 @@ function stopJourneyMode() {
     journeyWatchId = null;
   }
 
+  if (animatedRouteInterval) {
+    clearInterval(animatedRouteInterval);
+    animatedRouteInterval = null;
+  }
+
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+  }
+
+  lastSpokenInstruction = "";
+
+  if (map && userLocationMarker) {
+    map.removeLayer(userLocationMarker);
+    userLocationMarker = null;
+  }
+
+  if (map && userAccuracyCircle) {
+    map.removeLayer(userAccuracyCircle);
+    userAccuracyCircle = null;
+  }
+
+  clearOldRoute();
+  currentDestination = null;
+  userLocation = null;
+
   const journeyResult = document.getElementById("journeyResult");
   if (journeyResult) {
     journeyResult.innerHTML = `
       <div class="route-step"><b>Status:</b> Journey tracking stopped.</div>
+      <div class="route-step">Live tracking, marker, and route have been cleared.</div>
     `;
   }
 }
