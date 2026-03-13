@@ -448,96 +448,161 @@ button:hover{
   }
 
   .topSearchBar{
-    left:12px;
-    right:72px;
-    top:12px;
-    padding:14px;
+    left:10px;
+    right:70px;
+    top:10px;
+    padding:12px;
+    border-radius:20px;
     flex-direction:column;
     align-items:stretch;
-    gap:12px;
+    gap:10px;
+  }
+
+  .brandMini{
+    min-width:auto;
   }
 
   .brandTitle{
-    font-size:20px;
+    font-size:18px;
+    line-height:1.2;
   }
 
   .brandSub{
     font-size:12px;
+    line-height:1.4;
   }
 
   .searchCluster{
     flex-direction:column;
     align-items:stretch;
-    gap:10px;
+    gap:8px;
   }
 
   .mainSearchWrap{
     width:100%;
   }
 
+  .searchCluster input,
   .searchCluster select,
-  .searchCluster button,
-  .searchCluster input{
+  .searchCluster button{
     width:100%;
+  }
+
+  .drawerToggle{
+    top:10px;
+    right:10px;
+    width:50px;
+    height:50px;
+    border-radius:16px;
+  }
+
+  .quickBar{
+    display:none;
   }
 
   .floatingActions{
     position:absolute;
-    left:12px;
-    right:12px;
+    left:10px;
+    right:10px;
+    bottom:140px;
     top:auto;
-    bottom:210px;
     max-width:none;
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:8px;
+    z-index:1000;
   }
 
-  .quickBar{
-    position:absolute;
-    left:12px;
-    right:12px;
-    top:auto;
-    bottom:150px;
-    display:flex;
-    overflow-x:auto;
-    flex-wrap:nowrap;
-    padding-bottom:4px;
-    gap:8px;
-  }
-
-  .quickBar button{
-    white-space:nowrap;
-    flex:0 0 auto;
-  }
-
-  .resultCard{
-    left:12px;
-    right:12px;
-    bottom:12px;
-    width:auto;
-    max-width:none;
-    max-height:26vh;
-    padding:14px;
+  .floatingActions button{
+    width:100%;
+    min-height:52px;
+    font-size:13px;
+    padding:10px 12px;
+    border-radius:14px;
   }
 
   .mapMeta{
-    right:72px;
+    position:absolute;
+    right:10px;
+    bottom:330px;
     top:auto;
-    bottom:320px;
+    gap:8px;
     align-items:flex-end;
+    z-index:950;
   }
 
-  .drawerToggle{
-    top:12px;
-    right:12px;
-    width:52px;
-    height:52px;
+  .mapBadge,
+  #coordsBox{
+    font-size:12px;
+    padding:8px 12px;
+    border-radius:14px;
+    max-width:220px;
+  }
+
+  .resultCard{
+    left:10px;
+    right:10px;
+    bottom:10px;
+    width:auto;
+    max-width:none;
+    max-height:120px;
+    min-height:unset;
+    padding:14px;
+    border-radius:20px;
+    overflow:auto;
+    z-index:1000;
+  }
+
+  .resultHeader{
+    margin-bottom:8px;
+  }
+
+  .resultHeader h2{
+    font-size:16px;
+  }
+
+  .resultHint{
+    font-size:11px;
+  }
+
+  #result{
+    font-size:13px;
+    line-height:1.5;
+  }
+
+  .route-step{
+    padding:8px 10px;
+    margin:6px 0;
+    font-size:12px;
   }
 
   .advancedDrawer{
     width:100%;
     max-width:100%;
+    padding:14px;
+  }
+
+  .drawerHeader h2{
+    font-size:20px;
+  }
+
+  .drawerSection{
+    padding:14px;
+    border-radius:18px;
+  }
+
+  .drawerSection h3{
+    font-size:16px;
+  }
+
+  .journeyModalCard{
+    width:94vw;
+    padding:16px;
+    border-radius:20px;
+  }
+
+  #map{
+    height:100vh;
   }
 }
 
